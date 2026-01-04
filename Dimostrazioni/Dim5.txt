@@ -1,0 +1,37 @@
+Definizioni utili:
+
+sum :: Num a => [a] -> a
+sum [] 	     = 0
+sum (x : xs) = x + sum xs
+
+filter :: (a -> Bool) -> [a] -> [a] 
+filter _ [] 	  = []
+filter p (x : xs) 
+	| p x 	    = x : filter p xs
+	| otherwise = filter p xs
+
+
+Dimostrazione:
+	sum (filter p xs) ≤ sum xs
+	
+P(xs = [])
+	sum (filter p xs) ≤ sum xs	
+	sum (filter p []) ≤ sum []	filter.1, sum.1 
+	sum [] ≤ 0			sum.1 
+	0 ≤ 0
+
+
+xs :: [Nat] and P(xs') => P(xs = x : xs')
+	
+case p x = True	(<==>)
+	sum (filter p xs) ≤ sum xs
+	sum (filter p (x : xs')) ≤ sum (x : xs')
+	sum (filter p (x : xs')) ≤ sum (x : xs') 	filter.2, sum.2
+	sum (x : filter p xs') ≤ x + sum xs'		sum.2
+	x + sum (filter p xs') ≤ x + sum xs'		legge di monotonia su disequazione
+	x - x + sum (filter p xs') ≤ sum xs'		algebra
+	sum (filter p xs') ≤ sum xs'			ip.ind(xs')
+	
+
+case p x = False
+	...

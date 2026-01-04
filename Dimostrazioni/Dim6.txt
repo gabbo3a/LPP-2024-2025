@@ -1,0 +1,33 @@
+Definizioni utili:
+
+length :: [a] -> Int
+length [] 	= 0
+length (x : xs) = 1 + length xs
+
+take :: Int -> [a] -> [a]
+take _ []	= []
+take 0 _ 	= []
+take n (x : xs) = x : take (n - 1) xs
+
+
+Dimostrazione:
+	length (take n xs) ≤ n
+	
+	
+P([])
+	length (take n []) ≤ n 			take.1
+	length [] ≤ n				length.1
+	0 ≤ n					ip.tipo(n :: Nat)
+
+P(xs) => P(x : xs)
+	length (take n (x : xs)) ≤ n 		take.2
+	length (x: take (n - 1) xs) ≤ n 	length.2
+	1 + length (take (n - 1) xs) ≤ n	legge di monotonia (disequazioni)
+	length (take (n - 1) xs) ≤ n - 1	ip.ind(xs)
+	
+	
+	
+	
+	
+
+

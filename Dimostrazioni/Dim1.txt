@@ -1,0 +1,72 @@
+Definizione funzioni utili:
+	length :: [a] -> Int
+	length []	 = []
+	length (_ : xs)  = 1 + length xs
+
+	sum :: (Num a) => [a] -> a
+	sum []		= 0
+	sum (x : xs) 	= x + sum xs
+
+	concat :: [[a]] -> [a]
+	concat []	  = []
+	concat (xs : xss) = xs ++ concat xss
+	
+	(++) :: [a] -> [a] -> [a] 
+	(++) []       ys = ys
+	(++) (x : xs) ys = x : (++) xs ys 
+
+	map :: (a -> b) -> [a] -> [b]
+	map _ [] 	= []
+	map f (x : xs)  = (f x) : map xs
+
+Dimostrazione proprieta:
+	length (concat xss) = sum (map length xss)
+
+P(xss = []):
+	length (concat xss)	= ip
+	length (concat []) 	= concat.1 
+	length []		= length.1
+	0			= sum.1
+	sum []			= map.1
+	sum (map length [])	= ip
+	sum (map length xss)
+	
+P(xss') => P(xss = xs : xss'):
+	length (concat xss)			=
+	length (concat xs : xss') 		= concat.2
+	length (xs ++ concat xss') 		= (++).2
+	length (xs ++ concat xss')		= sub_lemma
+	length xs + length concat xss' 		= ip.ind(xss')
+	length xs + sum (map length xss') 	= sum.2
+	sum (length xs : map length xss')	= map.2
+	sum (map length (xs : xss'))		=
+	sum (map length xss)
+	
+	
+	
+sub_lemma:
+	length (xs ++ ys) = length xs + length ys
+
+P(xs = [])
+
+	length (xs ++ ys) 	=
+	length ([] ++ ys) 	= (++).1
+	length ys 		=
+	0 + length ys 		= length.1
+	length []  + length ys 	=
+	length xs  + length ys 	=
+	
+	
+P(xs') => P(xs = x : xs')
+	
+	length (xs ++ ys) 		=
+	length ((x : xs') ++ ys) 	= (++).2
+	length (x : (xs' ++ ys)) 	= length.2
+	1 + length (xs' ++ ys)		= ip.ind(xs', ys)
+	1 + length xs' + length ys	= length.2	
+	length (x : xs') + length ys	=
+	length xs + length ys
+	
+
+	
+	

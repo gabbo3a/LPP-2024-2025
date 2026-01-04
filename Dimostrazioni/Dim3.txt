@@ -1,0 +1,60 @@
+Definizioni utili:
+	uncurry :: (a -> b -> c) -> (a, b) -> c
+	uncurry f (x, y) = f x y
+	
+	tail :: [a] -> [a]
+	tail []       = error "empty"
+	tail (_ : xs) = xs
+	
+	zip :: [a] -> [b] -> [(a, b)]
+	zip [] 	   []	  = []
+	zip _ 	   []	  = []
+	zip [] 	   _	  = []
+	zip (x:xs) (y:ys) = (x, y) : zip xs ys
+	
+	
+	all :: (a -> Bool) -> [a] -> Bool
+	all _ [] = True
+	all p (x : xs) = p x && all p xs
+	
+	sorted :: Ord a => [a] -> Bool
+	sorted [] = True
+	sorted [x] = True
+	sorted (x : y : xs) = x <= y && sorted (y : xs)
+	
+	
+Dimostrazione:
+	sorted xs == all (uncurry (<=)) (zip xs (tail xs))
+	
+	
+P(xs = []):
+	sorted xs 				= 
+	sorted []				= sorted.1
+	True					= all.1
+	all (uncurry (<=)) []			= zip.1
+	all (uncurry (<=)) (zip [] (tail []))	=
+	all (uncurry (<=)) (zip xs (tail xs))
+	
+P(xs = [x]):
+	sorted xs 				= 
+	sorted [x]				= sorted.2
+	True					= all.1
+	all (uncurry (<=)) []			= zip.1
+	all (uncurry (<=)) (zip [x] [])		= tail.2
+	all (uncurry (<=)) (zip [x] (tail [x]))	=
+	all (uncurry (<=)) (zip xs (tail xs))
+
+P(y : xs') => P(xs = x : y : xs'):
+	sorted xs							=
+	sorted (x : y : xs')						= sorted.3
+	x <= y && sorted (y : xs')					= syntax
+	(<=) x y && sorted (y : xs')					= uncurry.1
+	uncurry (<=) (x, y) && sorted (y : xs')				= ip.ind (y : xs')
+	uncurry (<=) (x, y) && all (uncurry (<=)) (zip (y : xs') xs')	= all.2
+	all (uncurry (<=)) ((x, y) : zip (y : xs') xs')			= zip.2
+	all (uncurry (<=)) (zip (x : y : xs') (y : xs'))		= tail.2
+	all (uncurry (<=)) (zip (x : y : xs') (tail (x : y : xs'))	=
+	all (uncurry (<=)) (zip xs (tail xs))				=
+
+	
+	

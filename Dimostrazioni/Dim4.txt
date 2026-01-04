@@ -1,0 +1,44 @@
+Definizioni utili:
+
+(++) :: [a] -> [a] -> [a]
+(++) []       ys = ys
+(++) (x : xs) ys = x : (++) xs ys
+
+reverse ::
+reverse [] 	 = []
+reverse (x : xs) = reverse xs ++ [x]
+
+
+
+Dimostrazioni proprieta utili:
+(++).id.sx (xs = [])
+	xs ++ [] = 
+	[] ++ [] = (++).1
+	[]	 =
+	xs
+
+(++).id.sx (xs) => (++).id.sx (x : xs)
+	(x : xs) ++ [] 	=
+	x : (++) xs []	= ip.ind(xs)
+	x : xs
+	
+	
+Dimostrazione:
+	reverse (xs ++ ys) = reverse ys ++ reverse xs
+
+
+P(xs = [])
+	reverse (xs ++ ys) 	 =
+	reverse ([] ++ ys) 	 = 
+	reverse ys		 = (++).id.sx
+	reverse ys ++ [] 	 = reverse.1
+	reverse ys ++ reverse [] = 
+	reverse ys ++ reverse xs
+	
+P(xs ++ ys) => P(x : (xs ++ ys))
+	reverse (x : (xs ++ ys)) 	= (++).2
+	reverse (x : (++) xs ys)	= reverse.2
+	reverse ((++) xs ys) ++ [x]	= syntax
+	reverse (xs ++ ys) ++ [x]	= ip.ind(xs, ys))
+	reverse ys ++ reverse xs ++ [x]	= reverse.2
+	reverse ys ++ reverse (x : xs) 

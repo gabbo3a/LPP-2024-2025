@@ -1,0 +1,33 @@
+Definizioni utili: 
+	even :: [a] -> [a]
+	even [] = []
+	even (x : xs) = x : odd xs
+
+	odd :: [a] -> [a]
+	odd [] = []
+	odd (x : xs) = even xs
+	
+	length :: [a] -> Int
+	length [] 	= 0
+	length (_ : xs) = 1 + length xs
+	
+	
+Dimostrazione:	
+	length xs == length (even xs) + length (odd x)
+	
+P(xs = []):
+	length xs				=
+	length [] 				= length.1
+	0					=
+	0 + 0					= even.1, odd.1
+	length (even []) + length (odd [])	=
+	length (even xs) + length (odd xs)
+	
+P(xs') => P(xs = x : xs'):
+	length xs					 =
+	length (x : xs')				 = length.2
+	1 + length xs'					 = ip.ind(xs')
+	1 + length (even xs') + length (odd xs')	 = length.2, x is even senza perdita di generalita
+	length (x : even xs') + length (odd xs')	 = even.2, odd.2
+	length (even (x : xs')) + length (odd (x : xs')) =
+	length (even xs) + length (odd xs)
